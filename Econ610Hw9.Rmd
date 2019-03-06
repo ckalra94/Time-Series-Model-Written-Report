@@ -1,0 +1,40 @@
+---
+title: "Econ610Hw9"
+author: "Chris Kalra"
+date: "11/4/2018"
+output: html_document
+---
+
+#Exercise 1
+```{r}
+#a)
+#rental=data
+regr1a=lm(lrent ~ y90 + lpop + lavginc + pctstu, data=rental)
+summary(regr1a)
+#c)
+regr1c=lm(clrent ~ clpop + clavginc + cpctstu, data=rental)
+summary(regr1c)
+#d)
+install.packages("plm")
+library("plm")
+rental=pdata.frame(rental, index=c("city", "year"), drop.index=TRUE)
+regr1d=plm(lrent ~ y90 + lpop + lavginc + pctstu, data=rental)
+summary(regr1d)
+```
+
+#Exercise 2
+```{r}
+#murder=data
+#b)
+regr2b = plm(mrdrte~d93 + exec + unem, data=murder, subset=d90+d93==1, model='pooling', index=c("id", "year"))
+summary(regr2b)
+#c)
+regr3c=plm(mrdrte~d93 + exec + unem, data=murder, subset=d90+d93==1, model='within', index=c("id", "year"))
+summary(regr3c)
+#d)
+sort(year93$exec)
+#e)
+murder.2=murder[-c(130,131,132), ]
+regr3e=plm(mrdrte~d93 + exec + unem, data=murder.2, subset=d90+d93==1, model='within', index=c("id", "year"))
+summary(regr3e)
+```
